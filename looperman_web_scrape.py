@@ -9,14 +9,15 @@ soup = bs4.BeautifulSoup(response.text, 'html.parser')
 link_list = []
 
 for div_class in soup.find_all('div', {'class': 'tag-wrapper'}):
-    for trap in div_class.find_all('a', string="Trap Loops" or "Hip Hop Loops"):
+    for trap in div_class.find_all('a', string=(["Trap Loops", "Hip Hop Loops"])):
         href_list = list(div_class)
         href_list_string = [str(item) for item in href_list]
         link = ""
         for i in range(0, len(href_list_string)):
-            if "MB" in href_list_string[i] and "Drum Loops" not in href_list_string[i]:
+            if "MB" in href_list_string[i]:
                 link = href_list[i].get('href')
-                link_list.append(link)
+                if "drum-loop" not in link:
+                    link_list.append(link)
 
 
 def send_email(body):
